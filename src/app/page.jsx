@@ -1,20 +1,27 @@
 "use client";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase";
+import { auth } from "@/app/firebase";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 
 export default function Home() {
   const [user] = useAuthState(auth);
   const router = useRouter();
-  const userSession = sessionStorage.getItem("user");
+  const [isClient, setIsClient] = useState(false);
+  const [userSession, setUserSession] = useState(null);
 
-  console.log({ user });
+  useEffect(() => {
+    setIsClient(true);
+    setUserSession(sessionStorage.getItem("user"));
+  }, []);
 
-  if (!user && !userSession) {
-    router.push("/sign-up");
-  }
+  useEffect(() => {
+    if (isClient && !user && !userSession) {
+      router.push("/signup");
+    }
+  }, [isClient, user, userSession, router]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
