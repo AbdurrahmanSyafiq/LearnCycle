@@ -19,7 +19,7 @@ export default function UploadMaterial() {
   const handleUpload = async () => {
     if (!file || !title) return;
 
-    const storageRef = ref(storage, `materials/${user.uid}/${file.name}`);
+    const storageRef = ref(storage, `materials/${user.uid}/${title}/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(

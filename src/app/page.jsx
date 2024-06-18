@@ -50,7 +50,7 @@ export default function Home() {
       {user ? <Navbar username={user.email} /> : <Navbar username="" />}
       <div className="flex flex-wrap justify-center gap-4 mt-36">
         {users.map((userData) => (
-          <Card key={userData.id} name={userData.fullName} skill={userData.skill} />
+          <Card key={userData.id} name={userData.fullName} skill={userData.skill} userId={userData.id} />
         ))}
       </div>
     </main>
