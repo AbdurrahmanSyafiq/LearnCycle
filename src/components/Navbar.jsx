@@ -76,7 +76,7 @@ const Navbar = ({ username }) => {
               <li className="ml-2 text-base hover:border-b">Services</li>
             </Link> */}
             <Link
-              href={"/"}
+              href={"/uploadFile"}
               className="flex hover:text-rose-700 text-black transition ease-in-out duration-200">
               <li className="ml-2 text-base hover:border-b text-black">
                 {username}

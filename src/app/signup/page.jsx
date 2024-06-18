@@ -3,19 +3,21 @@ import { useState } from 'react';
 import Link from 'next/link';
 import {useCreateUserWithEmailAndPassword} from 'react-firebase-hooks/auth'
 import { auth } from '../firebase';
-
+import { useRouter } from 'next/navigation';
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
-
+  const router = useRouter();
   const handleSignUp = async () => {
     try {
         const res = await createUserWithEmailAndPassword(email, password)
         console.log({res})
-        sessionStorage.setItem('user', true)
+        sessionStorage.setItem("email", email);
+        sessionStorage.setItem("password", password);
         setEmail('');
         setPassword('')
+        router.push('/userprofile')
 
     } catch(e){
         console.error(e)
