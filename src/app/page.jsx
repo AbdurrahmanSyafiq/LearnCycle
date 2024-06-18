@@ -11,6 +11,7 @@ export default function Home() {
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [userSession, setUserSession] = useState(null);
+  
 
   console.log(user);
   useEffect(() => {
@@ -27,8 +28,12 @@ export default function Home() {
 
   return (
     <main className="w-full min-h-screen">
-      <Navbar />
-      <div className="mt-28 mx-16">{user && <Card name={user.email} />}</div>
+    {user ? (
+        <Navbar username={user.email} />
+        ) : (
+          <Navbar username="" />
+        )}
+      
     </main>
   );
 }
