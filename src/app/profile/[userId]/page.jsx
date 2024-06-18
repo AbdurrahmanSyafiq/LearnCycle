@@ -57,7 +57,7 @@ const UserProfile = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500">
-              View Materiall
+              View Material
             </a>
           </div>
         ))}
