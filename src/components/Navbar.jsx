@@ -1,17 +1,23 @@
+
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 
+
 const Navbar = ({ username }) => {
+
   const [menuOpen, setMenuOpen] = useState(false);
   const handleNav = () => {
     setMenuOpen(!menuOpen);
   };
+
+
 
   const [user] = useAuthState(auth);
   const router = useRouter();
@@ -29,6 +35,7 @@ const Navbar = ({ username }) => {
     }
   }, [isClient, user, userSession, router]);
 
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -36,6 +43,7 @@ const Navbar = ({ username }) => {
       console.error('Error logging out: ', error);
     }
   };
+
 
   return (
     <nav className="w-full fixed top-0 left-0 right-0 z-20 h-[70px] shadow-xl bg-white">
@@ -45,6 +53,7 @@ const Navbar = ({ username }) => {
             src={"/logo.png"}
             width="50"
             height="55"
+
             className="rounded-sm"
             alt="Logo"
           />
@@ -52,12 +61,14 @@ const Navbar = ({ username }) => {
         <div className="hidden sm:flex">
           <ul className="hidden sm:flex font-bold gap-x-8">
             {/* <Link
+
               href={"/"}
               className="flex hover:text-rose-700 transition ease-in-out duration-200">
               <Image
                 src={"/About.png"}
                 width={20}
                 height={20}
+
                 className="!w-6 !h-6"
                 alt="About"
               />
@@ -66,10 +77,12 @@ const Navbar = ({ username }) => {
             {/* <Link
               href={"/"}
               className="flex hover:text-rose-700 transition ease-in-out duration-200">
+
               <Image
                 src={"/Contact.png"}
                 width={20}
                 height={20}
+
                 className="!w-6 !h-6"
                 alt="Services"
               />
@@ -155,9 +168,11 @@ const Navbar = ({ username }) => {
                 src={"/About.png"}
                 width={20}
                 height={20}
+
                 className="!w-6 !h-6"
                 alt="About"
               />
+
               <li className="ml-10 text-base hover:border-b">About</li>
             </Link>
             <Link
@@ -167,9 +182,11 @@ const Navbar = ({ username }) => {
                 src={"/Contact.png"}
                 width={20}
                 height={20}
+
                 className="!w-6 !h-6"
                 alt="Services"
               />
+
               <li className="ml-10 text-base hover:border-b">Services</li>
             </Link>
           </ul>

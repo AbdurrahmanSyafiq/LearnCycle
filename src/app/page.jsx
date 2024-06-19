@@ -1,3 +1,4 @@
+
 // pages/index.js
 "use client";
 import { useEffect, useState } from "react";
@@ -19,12 +20,15 @@ async function fetchDataFromFirestore() {
   return data;
 }
 
+
 export default function Home() {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [userSession, setUserSession] = useState(null);
+
   const [users, setUsers] = useState([]);
+
 
   useEffect(() => {
     setIsClient(true);
@@ -36,6 +40,7 @@ export default function Home() {
       router.push("/signup");
     }
   }, [isClient, user, userSession, router]);
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -53,6 +58,7 @@ export default function Home() {
           <Card key={userData.id} name={userData.fullName} skill={userData.skill} userId={userData.id} />
         ))}
       </div>
+
     </main>
   );
 }

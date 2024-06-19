@@ -1,3 +1,4 @@
+
 'use client'
 import { useState } from 'react';
 import {useSignInWithEmailAndPassword} from 'react-firebase-hooks/auth'
@@ -53,3 +54,4 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
