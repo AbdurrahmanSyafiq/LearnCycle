@@ -1,37 +1,26 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import { storage } from "@/firebase"; // Sesuaikan path ke konfigurasi firebase Anda
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "@/app/firebase";
 
-const UserProfile = () => {
-  const pathname = usePathname(); // Mendapatkan path URL saat ini
-  const [userId, setUserId] = useState(null);
+const UserID = () => {
+  const router = usePathname();
+  console.log(router);
+  const parts = router.split("/");
+  const userId = parts[2];
+  console.log(userId);
   const [materials, setMaterials] = useState([]);
-
-  useEffect(() => {
-    // Mengekstrak userId dari pathname
-    const segments = pathname.split('/');
-    const extractedUserId = segments[2];
-    setUserId(extractedUserId);
-  }, [pathname]);
 
   useEffect(() => {
     const fetchMaterials = async () => {
       if (!userId) return;
 
       try {
-        const materialsRef = ref(storage, `materials/${userId}/`);
-        const materialsSnapshot = await listAll(materialsRef);
-        const materialsData = await Promise.all(
-          materialsSnapshot.items.map(async (itemRef) => {
-            const url = await getDownloadURL(itemRef);
-            return {
-              title: itemRef.name,
-              url,
-            };
-          })
-        );
+        const materialsRef = collection(db, "materials");
+        const q = query(materialsRef, where("userId", "==", userId));
+        const querySnapshot = await getDocs(q);
+        const materialsData = querySnapshot.docs.map((doc) => doc.data());
         setMaterials(materialsData);
       } catch (error) {
         console.error("Error fetching materials: ", error);
@@ -40,10 +29,6 @@ const UserProfile = () => {
 
     fetchMaterials();
   }, [userId]);
-
-  if (!userId) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="container mx-auto p-4">
@@ -66,4 +51,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default UserID;
