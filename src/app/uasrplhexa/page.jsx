@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 
 // Fungsi untuk memeriksa apakah sebuah bilangan adalah bilangan prima
