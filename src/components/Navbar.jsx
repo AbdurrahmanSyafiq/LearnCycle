@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+
+"use client";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect} from "react";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
-const Navbar = () => {
+
+
+const Navbar = ({ username }) => {
+
   const [menuOpen, setMenuOpen] = useState(false);
   const handleNav = () => {
     setMenuOpen(!menuOpen);
   };
+
+
+
   const [user] = useAuthState(auth);
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
@@ -27,11 +35,15 @@ const Navbar = () => {
     }
   }, [isClient, user, userSession, router]);
 
-  useEffect(() => {
-    if (isClient && !user && !userSession) {
-      router.push("/signup");
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Error logging out: ', error);
     }
-  }, [isClient, user, userSession, router]);
+  };
+
 
   return (
     <nav className="w-full fixed top-0 left-0 right-0 z-20 h-[70px] shadow-xl bg-white">
@@ -41,39 +53,71 @@ const Navbar = () => {
             src={"/logo.png"}
             width="50"
             height="55"
-            className="rounded-sm"></Image>
+
+            className="rounded-sm"
+            alt="Logo"
+          />
         </Link>
         <div className="hidden sm:flex">
           <ul className="hidden sm:flex font-bold gap-x-8">
-            <Link
+            {/* <Link
+
               href={"/"}
               className="flex hover:text-rose-700 transition ease-in-out duration-200">
               <Image
                 src={"/About.png"}
                 width={20}
                 height={20}
-                className="!w-6 !h-6"></Image>
+
+                className="!w-6 !h-6"
+                alt="About"
+              />
               <li className="ml-2 text-base hover:border-b">About</li>
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               href={"/"}
-              className="flex  hover:text-rose-700 transition ease-in-out duration-200">
+              className="flex hover:text-rose-700 transition ease-in-out duration-200">
+
               <Image
                 src={"/Contact.png"}
                 width={20}
                 height={20}
-                className="!w-6 !h-6"></Image>
+
+                className="!w-6 !h-6"
+                alt="Services"
+              />
               <li className="ml-2 text-base hover:border-b">Services</li>
-            </Link>
+            </Link> */}
             <Link
-              className="p-3 text-white bg-red-600 rounded-lg"
-              href={'/'}
-              onClick={() => {
-                signOut(auth);
-                sessionStorage.removeItem("user");
-              }}>
-              Logout
+              href={"/uploadFile"}
+              className="flex hover:text-rose-700 text-black transition ease-in-out duration-200">
+              <li className="ml-2 text-base hover:border-b text-black">
+                {username}
+              </li>
             </Link>
+            {user ? (
+              <Link
+                href="/signup"
+                className="flex text-rose-700 transition ease-in-out duration-200"
+                onClick={handleLogout}>
+                <li className="ml-2 text-base hover:border-b">Logout</li>
+              </Link>
+            ) : (
+              <Link
+                href="/signup"
+                className="flex text-rose-700 transition ease-in-out duration-200">
+                <li className="ml-2 text-base hover:border-b">SignUp</li>
+              </Link>
+            )}
+            {/* <Link
+              href={"/"}
+              className="flex text-rose-700 transition ease-in-out duration-200"
+              onClick={handleLogout}>
+             
+            </Link> */}
+            {/* <Link className="p-3 text-rose-700" onClick={handleLogout} href={'/'}>
+              Logout
+            </Link> */}
           </ul>
         </div>
         <div onClick={handleNav} className="sm:hidden cursor-pointer pl-24">
@@ -124,7 +168,11 @@ const Navbar = () => {
                 src={"/About.png"}
                 width={20}
                 height={20}
-                className="!w-6 !h-6"></Image>
+
+                className="!w-6 !h-6"
+                alt="About"
+              />
+
               <li className="ml-10 text-base hover:border-b">About</li>
             </Link>
             <Link
@@ -134,7 +182,11 @@ const Navbar = () => {
                 src={"/Contact.png"}
                 width={20}
                 height={20}
-                className="!w-6 !h-6 "></Image>
+
+                className="!w-6 !h-6"
+                alt="Services"
+              />
+
               <li className="ml-10 text-base hover:border-b">Services</li>
             </Link>
           </ul>
